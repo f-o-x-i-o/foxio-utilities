@@ -1,5 +1,5 @@
 .DS_Store
-.env
+**/.env
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -9,3 +9,4 @@ build/
 .cache/
 *.db
 output/
+.claude/

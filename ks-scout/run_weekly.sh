@@ -2,7 +2,7 @@
 # ks-scout weekly runner — triggered by launchd every Tuesday 10:00 AM
 set -e
 
-PROJECT_DIR="/Users/simon/Development/ks-scout"
+PROJECT_DIR="/Users/simon/Development/ks-scout/ks-scout"
 LOG_DIR="$PROJECT_DIR/output"
 
 mkdir -p "$LOG_DIR"
