@@ -5,7 +5,7 @@
 [llm]
 # provider    = "deepseek"         # "groq" or "deepseek"
 # model       = "deepseek-v4-flash"    # deepseek: deepseek-v4-flash | groq: llama-3.3-70b-versatile
-# api_key_env = "***REMOVED-LEAKED-KEY***" # env var holding your API key (GROQ_API_KEY for groq)
+# api_key_env = "DEEPSEEK_API_KEY"    # NAME of the env var that holds your key (e.g. DEEPSEEK_API_KEY or GROQ_API_KEY) — NEVER paste the key itself here
 
 [cache]
 project_list_ttl_hours  = 6
