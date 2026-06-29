@@ -1,0 +1,21 @@
+[project]
+name = "nrich"
+version = "0.1.0"
+description = "Enrich ks-scout leads with contact info via Apollo, LinkedIn, and web search"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "pyyaml>=6",
+    "rich>=13",
+    "ddgs>=9",
+]
+
+[project.scripts]
+nrich = "nrich.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nrich"]

@@ -1,0 +1,14 @@
+# nrich configuration
+# Copy to config.yaml and fill in your API keys.
+
+apollo:
+  api_key: ""              # Apollo.io master API key
+  rate_limit_per_hour: 600 # Apollo rate limit (default 600 req/h)
+
+google_cse:
+  api_key: ""              # Google Custom Search API key (optional, for web search)
+  cx: ""                   # Google Custom Search Engine ID (optional)
+
+search:
+  timeout: 45              # HTTP request timeout in seconds
+  min_delay: 1.0           # Minimum delay between requests (seconds)

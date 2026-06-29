@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foxio Design · Quote · Precision Analog Front-End</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root{
+  --bg:#f4f2ec;
+  --paper:#ffffff;
+  --ink:#16181d;
+  --ink-soft:#4a4e57;
+  --line:#dcd9cf;
+  --line-strong:#c4c0b3;
+  --accent:#e0532f;
+  --accent-soft:#fbe9e2;
+  --ok:#3a7d44;
+  --ok-soft:#e7f1e6;
+  --warn:#b8860b;
+  --warn-soft:#f6eecf;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  font-family:'Archivo',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{
+  max-width:820px;
+  margin:0 auto;
+  padding:0 22px 80px;
+}
+
+/* ---------- eyebrow / dividers ---------- */
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--accent);
+  font-weight:500;
+  margin-bottom:14px;
+}
+.eyebrow::before{content:"// ";color:var(--line-strong)}
+
+h1,h2,h3{
+  font-family:'Archivo Narrow','Archivo',sans-serif;
+  font-weight:700;
+  letter-spacing:-.01em;
+  text-transform:uppercase;
+  line-height:1.04;
+}
+
+/* ---------- header ---------- */
+.masthead{
+  border-bottom:2px solid var(--ink);
+  padding:34px 0 20px;
+  margin-bottom:8px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:30px;
+}
+.badge{
+  width:38px;height:38px;
+  object-fit:contain;
+  display:block;
+}
+.brand .name{
+  font-family:'Archivo Narrow';font-weight:700;
+  text-transform:uppercase;letter-spacing:.04em;font-size:16px;
+}
+.brand .tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;color:var(--ink-soft);
+  letter-spacing:.05em;margin-left:auto;text-align:right;
+}
+h1{
+  font-size:clamp(32px,7vw,54px);
+  margin:6px 0 18px;
+}
+h1 .accent{color:var(--accent)}
+.subtitle{
+  font-size:16px;color:var(--ink-soft);
+  max-width:62ch;
+}
+.project-line{
+  font-family:'Archivo Narrow','Archivo',sans-serif;
+  font-weight:700;text-transform:uppercase;letter-spacing:.01em;
+  font-size:clamp(18px,3.5vw,26px);
+  color:var(--ink);
+  margin:2px 0 14px;
+}
+.meta-row{
+  display:flex;flex-wrap:wrap;gap:6px 26px;
+  margin-top:24px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:var(--ink-soft);
+}
+.meta-row b{color:var(--ink);font-weight:500}
+
+/* ---------- sections ---------- */
+section{padding:42px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+h2{font-size:clamp(22px,4.5vw,30px);margin-bottom:8px}
+.lead{color:var(--ink-soft);max-width:64ch;margin-bottom:22px}
+
+p+p{margin-top:12px}
+p{color:var(--ink-soft)}
+strong{color:var(--ink);font-weight:600}
+
+/* ---------- callout ---------- */
+.callout{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-left:4px solid var(--accent);
+  border-radius:0 8px 8px 0;
+  padding:20px 22px;
+  margin:22px 0;
+}
+.callout .k{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);font-weight:500;display:block;margin-bottom:8px;
+}
+.callout p{color:var(--ink);margin:0}
+.callout.ok{border-left-color:var(--ok)}
+.callout.ok .k{color:var(--ok)}
+.callout.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+.callout.warn .k{color:var(--warn)}
+.callout em{font-style:italic;color:var(--ink)}
+
+/* ---------- de-risk steps ---------- */
+.steps{list-style:none;counter-reset:s;margin-top:8px}
+.steps li{
+  position:relative;
+  padding:14px 0 14px 46px;
+  border-top:1px solid var(--line);
+  counter-increment:s;
+}
+.steps li:first-child{border-top:none}
+.steps li::before{
+  content:counter(s,decimal-leading-zero);
+  position:absolute;left:0;top:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;font-weight:500;color:var(--accent);
+}
+.steps b{color:var(--ink)}
+.steps span{color:var(--ink-soft);display:block;font-size:14.5px}
+
+/* ---------- scope table ---------- */
+.tbl{
+  width:100%;
+  border-collapse:collapse;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+  margin-top:8px;
+  font-size:15px;
+}
+.tbl thead th{
+  background:var(--ink);
+  color:var(--bg);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  text-align:left;padding:12px 16px;
+}
+.tbl thead th.num{text-align:right}
+.tbl tbody td{
+  padding:12px 16px;
+  border-top:1px solid var(--line);
+  color:var(--ink-soft);
+  vertical-align:top;
+}
+.tbl tbody td.item{color:var(--ink);font-weight:500}
+.tbl tbody td.num{
+  text-align:right;
+  font-family:'JetBrains Mono',monospace;
+  font-weight:500;color:var(--ink);white-space:nowrap;
+}
+.tbl tbody tr.ec td{background:var(--accent-soft)}
+.tbl tbody tr.ec td.item{color:var(--accent)}
+.tbl tfoot td{
+  padding:14px 16px;
+  border-top:2px solid var(--ink);
+  font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;
+  letter-spacing:.02em;font-size:16px;
+}
+.tbl tfoot td.num{
+  text-align:right;font-family:'JetBrains Mono',monospace;font-size:16px;
+}
+.tbl td .desc{display:block;font-size:13px;color:var(--ink-soft);margin-top:2px;font-weight:400}
+
+/* ---------- pricing ---------- */
+.price-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:8px;
+}
+.price-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:24px;
+  display:flex;flex-direction:column;
+}
+.price-card.primary{
+  border:2px solid var(--ink);
+}
+.price-card .label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:500;margin-bottom:4px;
+}
+.price-card.primary .label{color:var(--accent)}
+.price-card .h{
+  font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;
+  font-size:20px;margin-bottom:14px;
+}
+.price-card .big{
+  font-family:'Archivo Narrow';font-weight:700;
+  font-size:clamp(34px,8vw,46px);line-height:1;
+  margin-bottom:4px;
+}
+.price-card .big small{font-size:20px;color:var(--ink-soft);font-weight:600}
+.price-card .sub{font-size:13.5px;color:var(--ink-soft);margin-bottom:16px}
+.price-card .formula{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12.5px;color:var(--ink-soft);
+  background:var(--bg);border:1px solid var(--line);
+  border-radius:6px;padding:10px 12px;margin-top:auto;
+}
+.tag-pill{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--accent);color:#fff;
+  padding:3px 9px;border-radius:20px;margin-bottom:14px;align-self:flex-start;
+}
+
+.note{
+  font-size:13.5px;color:var(--ink-soft);margin-top:18px;
+  padding-left:16px;border-left:2px solid var(--line-strong);
+}
+
+/* ---------- terms ---------- */
+.terms{list-style:none}
+.terms li{
+  padding:11px 0 11px 26px;
+  position:relative;
+  border-top:1px solid var(--line);
+  color:var(--ink-soft);font-size:15px;
+}
+.terms li:first-child{border-top:none}
+.terms li::before{
+  content:"→";position:absolute;left:0;top:11px;
+  color:var(--accent);font-weight:700;
+}
+.terms b{color:var(--ink);font-weight:600}
+
+/* ---------- footer ---------- */
+.foot{
+  margin-top:54px;padding-top:26px;
+  border-top:2px solid var(--ink);
+  display:flex;flex-wrap:wrap;gap:18px 30px;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-soft);
+}
+.foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line-strong)}
+.foot .sig{margin-left:auto;text-align:right}
+.foot .sig b{
+  font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;
+  font-size:15px;color:var(--ink);display:block;letter-spacing:.03em;
+}
+
+@media (max-width:640px){
+  .price-grid{grid-template-columns:1fr}
+  .brand .tag{margin-left:0;width:100%;text-align:left;margin-top:4px}
+  .brand{flex-wrap:wrap}
+  .foot .sig{margin-left:0;text-align:left;width:100%}
+  section{padding:34px 0}
+}
+
+@media print{
+  @page{ margin:14mm 0; }
+  html,body{background:#fff}
+  .wrap{max-width:100%;padding:0 16mm 0}
+
+  /* tighter vertical rhythm in print so sections don't leave big gaps */
+  section{
+    padding:18px 0;
+    break-inside:auto;          /* allow long sections to flow across pages */
+  }
+  .masthead{padding:0 0 16px;margin-bottom:0}
+  .brand{margin-bottom:18px}
+
+  /* keep a heading glued to the text that follows it */
+  h1,h2,.eyebrow{break-after:avoid}
+  .lead{break-before:avoid}
+  .tbl tfoot td{white-space:nowrap}
+
+  /* never split these atomic blocks across a page */
+  .price-card,.callout,.tbl,.tbl tr,.steps li,.terms li,.price-grid{
+    break-inside:avoid;
+  }
+
+  /* the masthead should not be forced onto a page of its own */
+  header.masthead{break-inside:avoid;break-after:auto}
+
+  /* footer stays with the last section */
+  .foot{break-inside:avoid}
+
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== MASTHEAD ===== -->
+  <header class="masthead">
+    <div class="brand">
+      <img class="badge" src="https://foxiodesign.com/assets/logo-badge.png" alt="Foxio Design">
+      <div class="name">Foxio Design.</div>
+      <div class="tag">PROJECT QUOTE · CONFIDENTIAL<br>{{CONFIDENTIALITY_LINE}}</div>
+    </div>
+    <div class="eyebrow">Fixed-Price Quote</div>
+    <h1>Quote<span class="accent">.</span></h1>
+    <p class="project-line">{{PROJECT_NAME}}</p>
+    <p class="subtitle">{{PROJECT_SUBTITLE}}</p>
+    <div class="meta-row">
+      <span><b>For:</b> {{CLIENT}}</span>
+      <span><b>From:</b> Simon Bourguigne</span>
+      <span><b>Date:</b> {{DATE}}</span>
+      <span><b>Ref:</b> {{REF}}</span>
+    </div>
+  </header>
+
+  <!--
+    ===== OPEN RISK (OPTIONAL SECTION) =====
+    Include this section ONLY when a block is architecturally unresolved, not merely
+    incomplete. If there is no open risk, delete the whole section.
+    Rules: name the risk honestly; state Simon's intended approach in one short paragraph;
+    use the .warn callout for the genuine uncertainty; frame the R&D phase as a
+    RECOMMENDATION (not mandatory) with an explicit "proceed directly" option.
+  -->
+  <section>
+    <div class="eyebrow">Open Engineering Risk</div>
+    <h2>{{RISK_TITLE}}</h2>
+    <p class="lead">{{RISK_LEAD}}</p>
+
+    <p>{{RISK_APPROACH}}</p>
+
+    <div class="callout warn">
+      <span class="k">Risk</span>
+      <p>{{RISK_BODY}}</p>
+    </div>
+
+    <div class="callout">
+      <span class="k">My Recommendation</span>
+      <p>I recommend a short, separately-quoted R&amp;D phase ahead of this design, though it isn't mandatory. {{RD_PHASE_DESCRIPTION}} You can also choose to proceed directly to the design and carry that risk into the work itself.</p>
+    </div>
+
+    <p class="note">If taken, this R&amp;D phase is <strong>not included below and is quoted separately</strong>.</p>
+  </section>
+
+  <!--
+    ===== SCOPE & HOURS =====
+    One <tr> per phase. Duplicate/delete rows as needed. Use the standard phase set as a
+    starting point. Add class="ec" to any row that carries extra uncertainty so it gets
+    highlighted. Keep the <tfoot> total in sync (recompute, never copy).
+  -->
+  <section id="scope-section">
+    <div class="eyebrow">Scope &amp; Effort</div>
+    <h2>Scope &amp; Hours</h2>
+    <p class="lead">{{SCOPE_LEAD}}</p>
+
+    <table class="tbl">
+      <thead>
+        <tr><th>Phase</th><th class="num">Hours</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="item">{{PHASE_1_NAME}}<span class="desc">{{PHASE_1_DESC}}</span></td>
+          <td class="num">{{PHASE_1_HOURS}}</td>
+        </tr>
+        <tr>
+          <td class="item">{{PHASE_2_NAME}}<span class="desc">{{PHASE_2_DESC}}</span></td>
+          <td class="num">{{PHASE_2_HOURS}}</td>
+        </tr>
+        <tr>
+          <td class="item">{{PHASE_3_NAME}}<span class="desc">{{PHASE_3_DESC}}</span></td>
+          <td class="num">{{PHASE_3_HOURS}}</td>
+        </tr>
+        <!-- add more <tr> rows here as needed; use class="ec" on any high-uncertainty row -->
+      </tbody>
+      <tfoot>
+        <tr><td>Total Estimated Effort</td><td class="num">{{TOTAL_HOURS}} h</td></tr>
+      </tfoot>
+    </table>
+
+    <p class="note">{{SCOPE_NOTE}}</p>
+  </section>
+
+  <!--
+    ===== PRICING =====
+    Fixed bid = 1.3 × rate × total_hours (recompute, show the formula).
+    Hourly on-estimate = rate × total_hours. Always present both.
+  -->
+  <section>
+    <div class="eyebrow">Investment</div>
+    <h2>Pricing</h2>
+    <p class="lead">My default is a fixed bid: estimated hours × rate × 1.3. The 30% covers uncertainty so you get one number, not open-ended invoices. The same work is also available hourly, with no margin.</p>
+
+    <div class="price-grid">
+      <div class="price-card primary">
+        <span class="tag-pill">Recommended</span>
+        <div class="label">Option A · Fixed Bid</div>
+        <div class="h">One Fixed Number</div>
+        <div class="big">{{FIXED_PRICE}}<small> USD</small></div>
+        <div class="sub">{{FIXED_SUB}}</div>
+        <div class="formula">1.3 × {{RATE}}/h × {{TOTAL_HOURS}}&nbsp;h = {{FIXED_PRICE}}</div>
+      </div>
+
+      <div class="price-card">
+        <div class="label">Option B · Hourly</div>
+        <div class="h">Pay For Time Used</div>
+        <div class="big">{{RATE}}<small> /h</small></div>
+        <div class="sub">Billed against actual hours, no uncertainty margin. May land under or over the fixed bid.</div>
+        <div class="formula">~{{TOTAL_HOURS}}&nbsp;h est. = ~{{HOURLY_TOTAL}} if on-estimate</div>
+      </div>
+    </div>
+
+    <!-- Keep this note only if there is an R&D phase; otherwise delete it. -->
+    <p class="note">If you take the recommended <strong>R&amp;D phase</strong>, it runs before this and is quoted separately.</p>
+  </section>
+
+  <!--
+    ===== TIMELINE =====
+    Talk in weeks-of-effort, not hard dates, unless a start is agreed. Mention any
+    availability constraints (trips). A reference start/delivery may be given casually,
+    never as a settled commitment.
+  -->
+  <section>
+    <div class="eyebrow">Timeline</div>
+    <h2>Timeline</h2>
+    <p class="lead">{{TIMELINE_LEAD}}</p>
+
+    <p>{{TIMELINE_DETAIL}}</p>
+
+    <div class="callout">
+      <span class="k">Net</span>
+      <p>{{TIMELINE_NET}}</p>
+    </div>
+  </section>
+
+  <!--
+    ===== TERMS & ASSUMPTIONS =====
+    One <li> per assumption. State the real assumptions so the number isn't padded with
+    hidden guesses. Duplicate/delete as needed.
+  -->
+  <section>
+    <div class="eyebrow">Fine Print</div>
+    <h2>Terms &amp; Assumptions</h2>
+    <ul class="terms">
+      <li>{{TERM_1}}</li>
+      <li>{{TERM_2}}</li>
+      <li>{{TERM_3}}</li>
+      <li><b>One review cycle</b> is included. Modifications beyond the first iteration are billed at <b>{{RATE}}/h</b>.</li>
+      <li><b>Delivery:</b> clean, commented native source files plus full manufacturing package. No black boxes, no lock-in.</li>
+      <!-- add more <li> terms as needed -->
+    </ul>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="foot">
+    <div>
+      contact@foxiodesign.com<br>
+      <a href="https://foxiodesign.com">foxiodesign.com</a> · Mar del Plata, ARG
+    </div>
+    <div class="sig">
+      <b>Simon Bourguigne</b>
+      Founder &amp; Principal Engineer
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
