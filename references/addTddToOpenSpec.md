@@ -57,6 +57,11 @@ Correr: `npm test` · un archivo: `npm test -- <ruta>`.
 El punto 3-4 (commitear el test fallando + no tocarlo) es la salvaguarda de Anthropic
 contra que el agente cambie el test para que pase.
 
+> **⚠ Importante — reemplazar los placeholders:**
+> `<Proyecto>` y `<stack>` son **genéricos**. Después de crear el archivo, reemplazalos
+> con los valores reales del proyecto (ej. `HyS Sport` y `React + Node/Express`).
+> Si quedan con los placeholders, el agente lee `<stack>` y no sabe qué stack usás.
+
 ## 3. Test runner
 
 No es un paso aparte: es una **decisión** registrada en los dos archivos de arriba
@@ -65,13 +70,36 @@ como **tarea del primer bloque de fundaciones** del `tasks.md`, no antes.
 
 ## 4. (Opcional) Perfil expandido para `/opsx:verify`
 
+Habilita el comando `/opsx:verify`, que tras `apply` reporta `⚠ Scenario X not tested`
+y cierra el loop TDD.
+
 ```
-openspec config profile    # elegir el perfil expandido
-openspec update            # regenera comandos/instrucciones
+openspec config profile    # arranca el asistente interactivo
 ```
 
-Habilita `/opsx:verify`, que tras `apply` reporta `⚠ Scenario X not tested` y cierra el
-loop TDD.
+El asistente hace varias preguntas. Responder así:
+
+```
+? What do you want to configure?
+  → Delivery and workflows                  # modo completo
+
+? Delivery mode (how workflows are installed):
+  → Both (skills + commands) [current]      # todo disponible
+
+? Select workflows to make available:
+  → Asegurarse de marcar [x] Verify change  # con ESPACIO, luego Enter
+  # Los demás (Propose, Explore, Apply, Sync, Archive) suelen venir
+  # marcados por defecto. Verify change NO viene marcado — hay que
+  # bajarlo con flechas y marcarlo manualmente.
+```
+
+Después de eso confirma `OK` a las preguntas de confirmación que siguen.
+
+Finalmente regenerar la configuración:
+
+```
+openspec update            # regenera comandos/instrucciones con el perfil elegido
+```
 
 ## El ciclo resultante (por change)
 
