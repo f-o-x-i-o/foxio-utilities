@@ -2,7 +2,8 @@
 # ks-scout weekly runner — triggered by launchd every Tuesday 10:00 AM
 set -e
 
-PROJECT_DIR="/Users/simon/Development/ks-scout/ks-scout"
+# self-locating: PROJECT_DIR is wherever this script lives (survives repo moves)
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_DIR="$PROJECT_DIR/output"
 
 mkdir -p "$LOG_DIR"

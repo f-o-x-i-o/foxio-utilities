@@ -9,6 +9,7 @@ Each tool lives in its own subdirectory with its own README, dependencies, and c
 | Directory | What it does |
 |---|---|
 | [`ks-scout/`](ks-scout/) | Kickstarter lead discovery — finds hardware projects likely to need EE help |
+| [`apollo-lookup/`](apollo-lookup/) | Check whether companies (e.g. ks-scout leads) figure in Apollo.io — by name, no credits |
 
 ## Setup
 
