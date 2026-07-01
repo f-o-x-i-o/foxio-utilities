@@ -18,7 +18,7 @@ from .detail import fetch_detail
 from .discover import discover_projects
 from .http_client import RateLimitedClient
 from .output import print_json, print_markdown, print_table, print_yaml
-from .output import save_structured, save_text
+from .output import save_structured, save_text, known_project_urls, OUTPUT_DIR
 
 
 def _load_dotenv() -> None:
@@ -65,7 +65,8 @@ from .score import composite_score, compute_traction, days_remaining
 @click.option("--ended-within-days", default=7, show_default=True, type=int,
               help="Include ended campaigns that closed within this many days.")
 @click.option("--save", "save_path", default=None, type=click.Path(),
-              help="Override the accumulated-leads file (default: output/leads.txt).")
+              help="Override the accumulated-leads file (default: the package's "
+                   "output/leads.<fmt>, fixed regardless of cwd).")
 @click.option("--append", "append_flag", is_flag=True, default=False,
               help="(DEPRECATED — now always on by default. Kept for compatibility.)")
 @click.option("--no-save", "no_save_flag", is_flag=True, default=False,
@@ -137,6 +138,28 @@ def main(
             sys.exit(2)
 
         err.print(f"  {len(raw)} candidates found.")
+
+        # 1b. Dedup against the accumulator — skip projects already recorded so we
+        # never spend detail-fetch + LLM on leads we already have. Matches discovery's
+        # urls.web.project against the stored canonical `url`. If the accumulator
+        # doesn't exist yet (or is empty) we analyze everything.
+        if not no_save_flag:
+            ext = {"yaml": ".yaml", "json": ".json"}.get(output_format, ".txt")
+            accumulator_path = save_path or str(OUTPUT_DIR / f"leads{ext}")
+            known_urls = known_project_urls(accumulator_path, output_format)
+            if known_urls:
+                before = len(raw)
+                raw = [
+                    p for p in raw
+                    if p.get("urls", {}).get("web", {}).get("project", "") not in known_urls
+                ]
+                err.print(
+                    f"  Dedup vs {accumulator_path}: {before - len(raw)} already known, "
+                    f"{len(raw)} new to analyze."
+                )
+                if not raw:
+                    err.print("[green]Nothing new — all candidates already in the accumulator.[/green]")
+                    sys.exit(0)
 
         # 2. Funding % filter — ended campaigns must also be fully funded (≥100%)
         now_ts = time.time()
@@ -231,7 +254,7 @@ def main(
                 r["ee_gap"] = "ERR"
                 r["confidence"] = 0.0
                 r["evidence"] = cls.get("evidence", "")
-                msg = handle_fatal_error(Exception(cls.get("evidence", "unknown")), output_dir="output")
+                msg = handle_fatal_error(Exception(cls.get("evidence", "unknown")), output_dir=str(OUTPUT_DIR))
                 err.print(f"[red]{msg}[/red]")
                 break
             r.update(cls)  # adds ee_gap, confidence, evidence
@@ -279,7 +302,7 @@ def main(
     # 8. Always save — accumulated + date-stamped snapshot (unless --no-save)
     if not no_save_flag:
         ext = {"yaml": ".yaml", "json": ".json"}.get(output_format, ".txt")
-        base_path = save_path or f"output/leads{ext}"
+        base_path = save_path or str(OUTPUT_DIR / f"leads{ext}")
         date_suffix = datetime.now().strftime("%Y%m%d")
         stem = Path(base_path).stem  # e.g. "leads"
         outdir = Path(base_path).parent

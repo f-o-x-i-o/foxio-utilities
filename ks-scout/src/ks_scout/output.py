@@ -9,6 +9,12 @@ from rich.console import Console
 from rich.table import Table
 
 
+# Canonical output dir, anchored to the package (repo/ks-scout/output) so all
+# writes — accumulator, dated snapshots, retry state — land in ONE fixed place
+# regardless of the cwd ks-scout was launched from. Same dir nrich reads.
+OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
+
+
 def _trunc(s: str, n: int) -> str:
     return s[: n - 1] + "…" if len(s) > n else s
 
@@ -141,6 +147,19 @@ def _existing_urls_text(path: str) -> set[str]:
 def _existing_urls_structured(path: str, fmt: str) -> set[str]:
     """Extract URLs from a YAML/JSON file."""
     return {_url_key(r) for r in _load_structured(path, fmt) if _url_key(r)}
+
+
+def known_project_urls(path: str, fmt: str) -> set[str]:
+    """Canonical project URLs already recorded in the accumulator, for early dedup.
+
+    Returns the set of stored `url` values (the canonical
+    kickstarter.com/projects/… link), which matches what discovery exposes as
+    ``urls.web.project`` — so a project can be skipped BEFORE detail-fetch + LLM.
+    Empty set if the accumulator doesn't exist yet (→ analyze everything).
+    """
+    if fmt in ("yaml", "json"):
+        return {r.get("url", "") for r in _load_structured(path, fmt) if r.get("url")}
+    return _existing_urls_text(path)
 
 
 def save_structured(results: list[dict], path: str, fmt: str, append: bool = False) -> int:

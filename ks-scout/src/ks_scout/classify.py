@@ -10,6 +10,7 @@ from openai import OpenAI
 
 from .cache import Cache
 from .config import Config
+from .output import OUTPUT_DIR
 
 _SYSTEM_PROMPT = """\
 You evaluate Kickstarter hardware projects as leads for an EE consultancy that helps teams \
@@ -106,8 +107,9 @@ _PROVIDER_CONFIG: dict[str, dict] = {
 # HTTP status codes that mean credit/auth exhausted — stop the whole batch
 _FATAL_STATUS_CODES = {401, 402}
 
-# Retry tracking across runs
-_RETRY_FILE = Path("output/.ks-scout-retry.json")
+# Retry tracking across runs — anchored to the fixed output dir (not cwd) so
+# credit-exhaustion detection works no matter where ks-scout is launched from.
+_RETRY_FILE = OUTPUT_DIR / ".ks-scout-retry.json"
 _MAX_RETRIES = 3
 
 
@@ -139,7 +141,7 @@ def _clear_retry_state() -> None:
         pass
 
 
-def handle_fatal_error(exc: Exception, output_dir: str = "output") -> str:
+def handle_fatal_error(exc: Exception, output_dir: str | None = None) -> str:
     """Record a fatal error, increment retry counter, and return a status message.
 
     On the 3rd failure writes *output/WARNING_CREDIT.txt*.
@@ -150,7 +152,7 @@ def handle_fatal_error(exc: Exception, output_dir: str = "output") -> str:
     msg = str(exc)[:500]
 
     if failures >= _MAX_RETRIES:
-        warning_path = Path(output_dir) / "WARNING_CREDIT.txt"
+        warning_path = (Path(output_dir) if output_dir else OUTPUT_DIR) / "WARNING_CREDIT.txt"
         warning_path.parent.mkdir(parents=True, exist_ok=True)
         warning_path.write_text(
             f"LLM CREDIT EXHAUSTED — {failures} consecutive failed runs\n"
