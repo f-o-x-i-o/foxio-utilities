@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foxio Design | [DECK TITLE]</title>
+<style>
+  @font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;
+    src:url('fonts/Anton.woff2') format('woff2')}
+  @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;
+    src:url('fonts/JetBrainsMono.woff2') format('woff2')}
+  @font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:100 800;font-display:swap;
+    src:url('fonts/JetBrainsMono-Italic.woff2') format('woff2')}
+
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --bg:#0b0b0a;                 /* near-black */
+    --ink:#E7E5E1;                /* mono body text */
+    --mut:#8d8a85;                /* dim mono */
+    --orange:#F5821F;
+    --grid:rgba(245,130,31,.05);
+    --line:rgba(245,130,31,.42);
+    --disp:'Anton','Arial Narrow',Impact,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  }
+
+  html{background:#000}
+  body{font-family:var(--mono);background:#000;color:var(--ink);-webkit-font-smoothing:antialiased}
+
+  .deck{display:flex;flex-direction:column;align-items:center;gap:3vh;padding:3vh 0}
+
+  .slide{
+    width:min(100vw, calc(100vh * 16 / 9));
+    aspect-ratio:16/9;
+    container-type:size;
+    position:relative;overflow:hidden;
+    background:var(--bg);
+    box-shadow:0 1.4vh 5vh rgba(0,0,0,.6);
+  }
+  /* faint technical grid, like foxiodesign.com */
+  .slide::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:linear-gradient(var(--grid) .08cqw,transparent .08cqw),
+                     linear-gradient(90deg,var(--grid) .08cqw,transparent .08cqw);
+    background-size:3.4cqw 3.4cqw;
+  }
+  .slide.glow::after{
+    content:"";position:absolute;top:-30cqh;right:-20cqw;width:70cqw;height:90cqh;z-index:0;
+    pointer-events:none;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(245,130,31,.16),transparent 70%);
+  }
+
+  /* ── Type scale (cqw = 1% of slide width — this is what keeps every slide
+     proportional regardless of viewport, no per-breakpoint media queries) ── */
+  .eyebrow{display:flex;align-items:center;gap:1cqw;font-family:var(--mono);font-size:.92cqw;
+    font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--orange)}
+  .eyebrow::before{content:"";width:2.6cqw;height:.12cqw;background:var(--orange);flex:none}
+
+  h1{font-family:var(--disp);font-weight:400;font-size:5.4cqw;line-height:.94;
+     letter-spacing:.006em;text-transform:uppercase;color:#fff}
+  h2{font-family:var(--disp);font-weight:400;font-size:3.7cqw;line-height:.98;
+     letter-spacing:.006em;text-transform:uppercase;color:#fff}
+  .hero{font-family:var(--disp);font-weight:400;font-size:8.8cqw;line-height:.9;
+     letter-spacing:.004em;text-transform:uppercase;color:#fff}
+  .o{color:var(--orange)}
+
+  .body-lg{font-family:var(--mono);font-size:1.28cqw;line-height:1.6;color:var(--ink);font-weight:400}
+  .body{font-family:var(--mono);font-size:1.08cqw;line-height:1.62;color:var(--ink);font-weight:400}
+  .sm{font-family:var(--mono);font-size:.96cqw;line-height:1.55;color:var(--ink)}
+  b,strong{color:#fff;font-weight:700}
+
+  /* ── Brand marks ── */
+  .logo{position:absolute;top:4.2cqw;left:4.6cqw;height:8cqh;z-index:5}
+  .logo img{height:100%;width:auto;display:block}
+  .meta{position:absolute;top:4.4cqw;right:4.8cqw;text-align:right;z-index:5;font-family:var(--mono)}
+  .meta b{color:var(--orange);font-size:1cqw;font-weight:700;letter-spacing:.06em;display:block}
+  .meta span{display:block;color:var(--mut);font-size:.92cqw;line-height:1.7}
+
+  /* ── Frames ── */
+  .pad{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:center;padding:7cqw 6.2cqw}
+  .split{position:absolute;inset:0;z-index:2;display:grid;grid-template-columns:1.05fr 1fr}
+  .split .col{display:flex;flex-direction:column;justify-content:center;padding:6cqw 4.8cqw}
+  /* framed photo, shown whole at natural aspect (no zoom / no crop) */
+  .shotwrap{display:flex;align-items:center;justify-content:center;height:100%;padding:3cqw;z-index:1}
+  .shot{max-width:100%;max-height:88%;object-fit:contain;
+    border:.12cqw solid rgba(245,130,31,.5);box-shadow:0 1cqw 3cqw rgba(0,0,0,.55)}
+
+  /* ── Failure / argument blocks ── */
+  .bars{display:flex;flex-direction:column;gap:1.3cqw;margin-top:2cqw}
+  .bar{border-left:.26cqw solid var(--orange);padding-left:1.4cqw}
+  .bar h3{font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+    font-size:1.25cqw;color:#fff;margin-bottom:.35cqw}
+  .bar p{font-family:var(--mono);font-size:.95cqw;line-height:1.5;color:var(--ink);max-width:31cqw}
+
+  /* ── Divider rows (numbered process / workflow) ── */
+  .rows{display:flex;flex-direction:column;margin-top:1.4cqw}
+  .row{display:grid;grid-template-columns:16cqw 1fr;gap:2cqw;padding:1.35cqw 0;
+    border-top:.1cqw solid var(--line);align-items:baseline}
+  .row:first-child{border-top:none}
+  .row .k{font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    font-size:1.16cqw;color:#fff;display:flex;gap:.9cqw;align-items:baseline}
+  .row .k .n{font-family:var(--disp);color:var(--orange);font-size:1.7cqw}
+  .row .v{font-family:var(--mono);font-size:1.02cqw;line-height:1.45;color:var(--ink)}
+
+  /* ── Timeline / pipeline ── */
+  .flow{display:flex;align-items:stretch;gap:1.2cqw;margin-top:2.6cqw}
+  .node{flex:1;border:.1cqw solid var(--line);padding:1.8cqw 1.6cqw;position:relative}
+  .node.on{border-color:var(--orange);background:rgba(245,130,31,.06)}
+  .node .ic{font-size:2.1cqw;line-height:1}
+  .node h4{font-family:var(--mono);font-weight:700;font-size:1.2cqw;color:#fff;
+    text-transform:uppercase;letter-spacing:.03em;margin:.7cqw 0 .35cqw}
+  .node p{font-family:var(--mono);font-size:.9cqw;color:var(--ink);line-height:1.4}
+  .node .tag{display:inline-block;margin-top:.9cqw;background:var(--orange);color:#000;
+    font-family:var(--mono);font-size:.76cqw;font-weight:700;letter-spacing:.12em;padding:.28cqw 1cqw}
+  .arrow{display:flex;align-items:center;color:var(--line);font-size:1.8cqw}
+
+  /* ── Cards (offers / testimonials) ── */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw;margin-top:2.2cqw}
+  .card{border:.1cqw solid var(--line);padding:2.4cqw 2cqw;display:flex;flex-direction:column;background:rgba(255,255,255,.012)}
+  .card h3{font-family:var(--mono);font-weight:700;font-size:1.28cqw;text-transform:uppercase;
+    letter-spacing:.03em;color:var(--orange);margin-bottom:1cqw}
+  .card p{font-family:var(--mono);font-size:1cqw;line-height:1.5;color:var(--ink)}
+  .card .price{margin-top:auto;padding-top:1.3cqw;font-family:var(--mono);font-size:.82cqw;
+    font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+  .quote{font-family:var(--mono);font-size:1.02cqw;line-height:1.55;color:var(--ink);font-style:italic}
+  .quote::before{content:"\201C"}.quote::after{content:"\201D"}
+  .attr{margin-top:auto;padding-top:1.4cqw;font-family:var(--mono);font-size:.96cqw;font-weight:700;color:var(--orange)}
+  .attr span{display:block;font-weight:400;font-size:.82cqw;color:var(--mut);margin-top:.3cqw}
+
+  /* ── Stats ── */
+  .stats{display:flex;gap:2.8cqw;margin:1.9cqw 0}
+  .stat .num{font-family:var(--disp);font-size:3.6cqw;color:var(--orange);line-height:.9}
+  .stat .lab{font-family:var(--mono);font-size:.82cqw;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin-top:.5cqw}
+  .note{border:.1cqw solid var(--line);padding:1.5cqw 1.7cqw;background:rgba(245,130,31,.05)}
+  .note p{font-family:var(--mono);font-size:.98cqw;line-height:1.5;color:var(--ink)}
+
+  /* ── Two-column tech / econ grid ── */
+  .tech{display:grid;grid-template-columns:1fr 1fr;gap:1.5cqw 2.2cqw;margin-top:1.6cqw}
+  .tech h4{font-family:var(--mono);font-size:.98cqw;font-weight:700;color:var(--orange);
+    text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5cqw}
+  .tech p{font-family:var(--mono);font-size:.96cqw;line-height:1.45;color:var(--ink)}
+  .econ{display:flex;flex-direction:column;gap:1.6cqw;margin-top:.4cqw}
+  .econ h4{font-family:var(--mono);font-size:1.12cqw;font-weight:700;color:var(--orange);margin-bottom:.4cqw}
+  .econ p{font-family:var(--mono);font-size:.98cqw;line-height:1.45;color:var(--ink)}
+
+  .foot{position:absolute;bottom:5cqw;left:6.2cqw;right:6.2cqw;z-index:2;display:flex;justify-content:space-between;align-items:flex-end}
+  .glyph{position:absolute;z-index:3;color:var(--orange)}
+
+  @page{size:1920px 1080px;margin:0}
+  @media print{
+    html,body{background:#fff}
+    .deck{gap:0;padding:0}
+    .slide{width:1920px;height:1080px;aspect-ratio:auto;box-shadow:none;break-after:page;page-break-after:always}
+    .slide:last-child{break-after:auto;page-break-after:auto}
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- 1 · TITLE / HOOK — one strong claim, one line of context, signed by a person -->
+<section class="slide glow">
+  <div class="logo"><img src="logo.png" alt="Foxio Design"></div>
+  <div class="meta"><b>[MONTH YEAR]</b><span>[Deck subtitle / audience]</span><span>foxiodesign.com</span></div>
+  <div class="pad">
+    <div class="eyebrow">[Audience / for whom]</div>
+    <h1 style="margin-top:2cqw;max-width:52cqw">[Hook headline with <span class="o">one emphasized phrase</span>]</h1>
+    <p class="body-lg" style="margin-top:2cqw;max-width:40cqw">
+      [One or two sentences naming the reader's situation in concrete terms — not abstractions.]
+    </p>
+  </div>
+  <div class="foot">
+    <div><p style="color:#fff;font-size:1.02cqw;font-weight:700">[Presenter name]</p>
+    <p style="color:var(--mut);font-size:.9cqw">[Presenter title], Foxio Design</p></div>
+    <div class="glyph" style="position:static;font-family:var(--disp);font-size:3cqw">&rsaquo;</div>
+  </div>
+</section>
+
+<!-- 2 · PROBLEM (split + bars) — name the pattern, then 2-3 failure modes as .bar blocks -->
+<section class="slide">
+  <div class="split">
+    <div class="col">
+      <div class="eyebrow">[Section label]</div>
+      <h2 style="margin-top:1.8cqw;max-width:33cqw">[Problem framed as a quote or pattern <span class="o">the reader recognizes</span>]</h2>
+      <p class="body" style="margin-top:1.6cqw;max-width:34cqw">
+        [Expand the situation in plain terms — what triggers it, why it's awkward.]
+      </p>
+      <div class="bars">
+        <div class="bar"><h3>[Bad option A]</h3><p>[Concrete cost of taking it.]</p></div>
+        <div class="bar"><h3>[Bad option B]</h3><p>[Concrete cost of taking it.]</p></div>
+      </div>
+    </div>
+    <div class="shotwrap"><img class="shot" src="[photo].png" alt="[description]"></div>
+  </div>
+</section>
+
+<!-- 3 · POSITIONING (pad + flow) — where you plug into the reader's existing process -->
+<section class="slide">
+  <div class="logo"><img src="logo.png" alt="Foxio Design"></div>
+  <div class="pad">
+    <div class="eyebrow">[How we fit]</div>
+    <h2 style="margin-top:1.8cqw;max-width:56cqw">[Reframe: you keep the lead, <span class="o">we own this one piece.</span>]</h2>
+    <p class="body-lg" style="margin-top:1.4cqw;max-width:48cqw">
+      [One paragraph making the boundary explicit: what stays theirs, what's yours.]
+    </p>
+    <div class="flow">
+      <div class="node"><div class="ic">&#x1F4D0;</div><h4>[Their stage]</h4><p>[They own this]</p></div>
+      <div class="arrow">&#x2192;</div>
+      <div class="node on"><div class="ic">&#x26A1;</div><h4>[Your stage]</h4><p>[What you do here]</p><div class="tag">FOXIO</div></div>
+      <div class="arrow">&#x2192;</div>
+      <div class="node"><div class="ic">&#x1F3ED;</div><h4>[Next stage]</h4><p>[Who owns it]</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · PROCESS (pad + numbered rows) — 3-5 step workflow, terse verb-first steps -->
+<section class="slide">
+  <div class="meta"><b>[Section tag]</b></div>
+  <div class="pad">
+    <div class="eyebrow">[Process name]</div>
+    <h2 style="margin-top:1.8cqw;max-width:54cqw">[Headline framing the process as fitting their world]</h2>
+    <div class="rows">
+      <div class="row"><div class="k"><span class="n">01</span>[Step]</div>
+        <div class="v">[What happens, concretely, in one or two sentences.]</div></div>
+      <div class="row"><div class="k"><span class="n">02</span>[Step]</div>
+        <div class="v">[What happens, concretely, in one or two sentences.]</div></div>
+      <div class="row"><div class="k"><span class="n">03</span>[Step]</div>
+        <div class="v">[What happens, concretely, in one or two sentences.]</div></div>
+      <div class="row"><div class="k"><span class="n">04</span>[Step]</div>
+        <div class="v">[What happens, concretely, in one or two sentences.]</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · SINGLE-POINT ARGUMENT (split + photo) — one idea, no bullets, let the photo carry proof -->
+<section class="slide">
+  <div class="split">
+    <div class="col">
+      <div class="eyebrow">[Section label]</div>
+      <h2 style="margin-top:1.8cqw;max-width:34cqw">[One-idea headline <span class="o">with the payoff emphasized.</span>]</h2>
+      <p class="body" style="margin-top:1.6cqw;max-width:34cqw">
+        [2-4 sentences developing the single idea. Resist adding a second idea to this slide.]
+      </p>
+    </div>
+    <div class="shotwrap"><img class="shot" src="[photo].png" alt="[description]"></div>
+  </div>
+</section>
+
+<!-- 6 · CAPABILITY GRID (split + tech) — for the technical reader in the room -->
+<section class="slide">
+  <div class="split">
+    <div class="col">
+      <div class="eyebrow">[For the specialist reader]</div>
+      <div class="tech" style="margin-top:2cqw">
+        <div><h4>[Category]</h4><p>[Tools / standards / specifics, comma-separated, no fluff.]</p></div>
+        <div><h4>[Category]</h4><p>[Tools / standards / specifics, comma-separated, no fluff.]</p></div>
+        <div><h4>[Category]</h4><p>[Tools / standards / specifics, comma-separated, no fluff.]</p></div>
+        <div><h4>[Category]</h4><p>[Tools / standards / specifics, comma-separated, no fluff.]</p></div>
+      </div>
+    </div>
+    <div class="shotwrap"><img class="shot" src="[photo].png" alt="[description]"></div>
+  </div>
+</section>
+
+<!-- 7 · PROOF / CASE STUDY (split + stats + note) — a named result, not a category claim -->
+<section class="slide">
+  <div class="split">
+    <div class="col">
+      <div class="eyebrow">Case Study</div>
+      <h2 style="margin-top:1.6cqw;font-size:2.7cqw;max-width:34cqw">[Project name] — <span class="o">[one-line what it was]</span></h2>
+      <div class="stats">
+        <div class="stat"><div class="num">[N]</div><div class="lab">[Metric label]</div></div>
+        <div class="stat"><div class="num">[N]</div><div class="lab">[Metric label]</div></div>
+        <div class="stat"><div class="num">[N]</div><div class="lab">[Metric label]</div></div>
+      </div>
+      <div class="note"><p><b>[Your] scope:</b> [what you owned, specifically, end to end].</p></div>
+    </div>
+    <div class="shotwrap"><img class="shot" src="[photo].png" alt="[description]"></div>
+  </div>
+</section>
+
+<!-- 8 · SOCIAL PROOF (logo + cards) — 3 short real quotes, name + title, no paraphrase -->
+<section class="slide">
+  <div class="logo"><img src="logo.png" alt="Foxio Design"></div>
+  <div class="pad">
+    <div class="eyebrow">[Trust section label]</div>
+    <div class="cards">
+      <div class="card"><p class="quote">[Verbatim short quote.]</p>
+        <p class="attr">[Name]<span>[Title, Company]</span></p></div>
+      <div class="card"><p class="quote">[Verbatim short quote.]</p>
+        <p class="attr">[Name]<span>[Title, Company]</span></p></div>
+      <div class="card"><p class="quote">[Verbatim short quote.]</p>
+        <p class="attr">[Name]<span>[Title, Company]</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · OFFER TIERS (logo + cards) — smallest-risk entry point first, then escalate -->
+<section class="slide">
+  <div class="logo"><img src="logo.png" alt="Foxio Design"></div>
+  <div class="pad">
+    <div class="eyebrow">[Offer section label]</div>
+    <h2 style="margin-top:1.6cqw">[Headline nudging toward the low-risk first step.]</h2>
+    <div class="cards">
+      <div class="card"><h3>[Tier name]</h3>
+        <p>[What's included, why it's the safe first move.]</p>
+        <p class="price">[Pricing model, e.g. Fixed scope · Fixed price]</p></div>
+      <div class="card"><h3>[Tier name]</h3>
+        <p>[What's included.]</p>
+        <p class="price">[Pricing model]</p></div>
+      <div class="card"><h3>[Tier name]</h3>
+        <p>[What's included, the full-ownership option.]</p>
+        <p class="price">[Pricing model]</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · TRUST / ECONOMICS (split + econ) — remove the reasons to hesitate -->
+<section class="slide">
+  <div class="split">
+    <div class="col">
+      <div class="eyebrow">[Section label]</div>
+      <h2 style="margin-top:1.8cqw;max-width:35cqw">[Headline addressing the objection directly.]</h2>
+      <p class="body" style="margin-top:1.4cqw;max-width:34cqw">
+        [1-2 sentences reinforcing directness / no hidden layers.]
+      </p>
+      <div class="econ" style="margin-top:1.8cqw">
+        <div><h4>[Reassurance point]</h4><p>[One sentence backing it up.]</p></div>
+        <div><h4>[Reassurance point]</h4><p>[One sentence backing it up.]</p></div>
+      </div>
+    </div>
+    <div class="shotwrap"><img class="shot" src="[photo].png" alt="[description]"></div>
+  </div>
+</section>
+
+<!-- 11 · CLOSING (glow + hero) — restate the payoff as an image of the future, then contact info -->
+<section class="slide glow">
+  <div class="meta"><b>Foxio Design</b><span>[email]</span><span>[phone]</span></div>
+  <div class="glyph" style="top:11cqw;right:5.4cqw;font-family:var(--disp);font-size:4.4cqw">&#x2197;</div>
+  <div class="pad">
+    <div class="eyebrow">[Prompt: the next time X happens]</div>
+    <div class="hero" style="margin-top:2.2cqw;max-width:62cqw">[Payoff line one<br><span class="o">payoff line two.</span>]</div>
+    <p class="body-lg" style="margin-top:2.4cqw;max-width:42cqw">
+      [One sentence call to action — what to send, what happens next.]
+    </p>
+  </div>
+</section>
+
+</div>
+</body>
+</html>
