@@ -39,9 +39,10 @@ Before writing a word, know who's reading it. A visual/industrial-design person 
    ```
 2. **Inventory the assets** the user has given you: list every image file found, and for each, state which case it maps to and why (filename keywords, or ask if ambiguous — never guess silently on an unclear file). Anything that matches no case: ask, don't drop it silently and don't guess.
 3. **Write SPEC.md**: structure, per-page content plan, asset mapping table. Show it for approval before generating anything.
-4. **Copy the template fragments** into `sections/`, fill in the copy per case using the content the user provided (or drafts you propose for their approval — don't invent case outcomes or numbers).
-5. **Missing images**: use the `.placeholder` block from the template exactly as documented (dashed border, "IMAGE MISSING", expected filename) — never invent or generate a replacement image.
-6. **Build and verify** (see below), then deliver the PDF.
+4. **Wait for the real images before writing case copy.** Even if an initial brief already contains draft story text per case, don't treat it as final: once the images land, ask Simon to describe each project in his own words first, then write the copy from that description. His account of a project is the source of truth, not a pre-written brief — facts, emphasis, and what's safe to say can shift once he's looking at the actual images and thinking it through again.
+5. **Copy the template fragments** into `sections/`, fill in the copy per case using what Simon described (or drafts you propose for their approval — don't invent case outcomes or numbers).
+6. **Missing images**: use the `.placeholder` block from the template exactly as documented (dashed border, "IMAGE MISSING", expected filename) — never invent or generate a replacement image.
+7. **Build and verify** (see below), then deliver the PDF.
 
 Reordering later = rename the numeric prefixes in `sections/`. Swapping a case for a different audience = replace that one file's content, or drop/duplicate a compact-case block (see `case-compact-page.html`'s comment about why compact cases share one physical page and can't each be a separate file the way full-page cases are).
 
